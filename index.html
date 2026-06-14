@@ -2,271 +2,90 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Custom Certificate Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<title>Lyria Certificate Generator</title>
 <style>
   :root {
-    --bg: #0b0d11;
-    --panel: #15181f;
+    --bg: #0f1115;
+    --panel: #1a1d24;
     --accent: #4f8cff;
-    --accent-hover: #3b76e0;
     --text: #e8eaed;
     --muted: #9aa0a6;
-    --border: #252932;
-    --card-bg: #1c202a;
+    --border: #2a2e37;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 30px 16px 80px;
+    padding: 24px 16px 60px;
   }
   h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 10px 0 5px;
-    text-align: center;
-    background: linear-gradient(135deg, #ffffff, var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .subtitle {
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-bottom: 30px;
+    font-size: 1.4rem;
+    margin: 8px 0 20px;
     text-align: center;
   }
-  .container {
-    display: flex;
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-    flex-wrap: wrap;
-  }
-  .controls-card {
+  .controls {
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    flex: 1 1 450px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .preview-card {
-    flex: 1 1 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 24px;
   }
   label {
     display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
+    font-size: 0.85rem;
+    color: var(--muted);
     margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    margin-top: 14px;
   }
-  .input-field {
+  input[type="text"], input[type="date"] {
     width: 100%;
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-radius: 8px;
     border: 1px solid var(--border);
     background: #0f1115;
     color: var(--text);
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: border-color 0.2s;
+    font-size: 1rem;
   }
-  .input-field:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  
-  /* File Upload Area */
-  .upload-row {
+  input:focus { outline: 2px solid var(--accent); }
+  .row {
     display: flex;
     gap: 12px;
-  }
-  .file-upload-btn {
-    flex: 1;
-    position: relative;
-    background: var(--card-bg);
-    border: 1px dashed var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .file-upload-btn:hover {
-    border-color: var(--accent);
-    background: rgba(79, 140, 255, 0.05);
-  }
-  .file-upload-btn span {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  .file-upload-btn strong {
-    font-size: 0.8rem;
-    color: var(--text);
-  }
-  .file-upload-btn input[type="file"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  /* Settings accordion */
-  .settings-section {
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-    margin-top: 8px;
-  }
-  .settings-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    user-select: none;
-  }
-  .settings-toggle::after {
-    content: "▼";
-    font-size: 0.7rem;
-    transition: transform 0.2s;
-  }
-  .settings-toggle.open::after {
-    transform: rotate(180deg);
-  }
-  .settings-content {
-    display: none;
-    margin-top: 16px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 8px;
-  }
-  .settings-content.open {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  /* Scrollbar for settings */
-  .settings-content::-webkit-scrollbar {
-    width: 6px;
-  }
-  .settings-content::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .settings-content::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 3px;
-  }
-
-  .settings-group-title {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 4px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  .slider-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .slider-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--muted);
-  }
-  .slider-header span.value {
-    color: var(--text);
-    font-weight: 600;
-  }
-  input[type="range"] {
-    width: 100%;
-    height: 6px;
-    background: #0f1115;
-    border-radius: 3px;
-    outline: none;
-    -webkit-appearance: none;
-    accent-color: var(--accent);
-  }
-
-  /* Row of buttons */
-  .btn-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
   }
   button {
     flex: 1;
-    padding: 14px 20px;
+    padding: 12px 16px;
     border-radius: 8px;
     border: none;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    font-family: inherit;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    transition: opacity 0.15s ease;
   }
-  button:active {
-    transform: scale(0.98);
-  }
+  button:hover { opacity: 0.85; }
   #downloadBtn {
     background: var(--accent);
     color: #fff;
   }
-  #downloadBtn:hover {
-    background: var(--accent-hover);
-  }
   #resetBtn {
-    background: #252932;
+    background: #2a2e37;
     color: var(--text);
   }
-  #resetBtn:hover {
-    background: #2e333e;
-  }
-
-  /* Canvas layout */
   .canvas-wrap {
     width: 100%;
+    max-width: 900px;
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
-    background: #111;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    background: #fff;
   }
   canvas {
     display: block;
@@ -278,209 +97,53 @@
     color: var(--muted);
     margin-top: 16px;
     text-align: center;
-    line-height: 1.4;
+    max-width: 600px;
   }
 </style>
 </head>
 <body>
 
-<h1>🏆 Custom Certificate Generator</h1>
-<div class="subtitle">Upload your custom templates, adjust layout coordinates dynamically, and generate certificates.</div>
+<h1>🏆 Lyria "Top Artist" Certificate Generator</h1>
 
-<div class="container">
-  
-  <div class="controls-card">
-    <div>
-      <label for="nameInput">Recipient Name</label>
-      <input type="text" class="input-field" id="nameInput" placeholder="Enter recipient's name" value="Alex Morgan">
-    </div>
+<div class="controls">
+  <label for="nameInput">Recipient Name</label>
+  <input type="text" id="nameInput" placeholder="Enter full name" value="">
 
-    <div>
-      <label for="dateInput">Date Issued</label>
-      <input type="date" class="input-field" id="dateInput" value="2026-06-14">
-    </div>
+  <label for="dateInput">Date</label>
+  <input type="date" id="dateInput" value="2026-06-14">
 
-    <div>
-      <label>Templates & Assets</label>
-      <div class="upload-row">
-        <div class="file-upload-btn">
-          <strong>📜 Template Image</strong>
-          <span id="tplName">Using Default</span>
-          <input type="file" id="tplUpload" accept="image/*">
-        </div>
-        <div class="file-upload-btn">
-          <strong>✍ Signature Image</strong>
-          <span id="sigName">None Uploaded (Optional)</span>
-          <input type="file" id="sigUpload" accept="image/*">
-        </div>
-      </div>
-    </div>
-
-    <!-- Advanced customization settings -->
-    <div class="settings-section">
-      <div class="settings-toggle" id="settingsToggle">Customize Layout & Fonts</div>
-      <div class="settings-content" id="settingsContent">
-        
-        <!-- Recipient Name settings -->
-        <div class="settings-group-title">Recipient Name Placement</div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Font Style</span></div>
-          <select class="input-field" id="nameFontSelect" style="padding: 8px 12px; font-size:0.85rem;">
-            <option value="Dancing Script">(Recommended) Elegant Cursive</option>
-            <option value="Great Vibes">Calligraphy Script</option>
-            <option value="Playfair Display">Classic Serif</option>
-            <option value="Montserrat">Modern Sans-Serif</option>
-            <option value="Brush Script MT, cursive">System Cursive</option>
-          </select>
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Text Color</span></div>
-          <input type="color" id="nameColor" value="#1a1a1a" style="width:100%; height:35px; border:1px solid var(--border); border-radius:6px; background:none; cursor:pointer;">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Vertical Position (Y)</span><span class="value" id="nameYVal">53%</span></div>
-          <input type="range" id="nameY" min="0" max="100" value="53" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Horizontal Position (X)</span><span class="value" id="nameXVal">50%</span></div>
-          <input type="range" id="nameX" min="0" max="100" value="50" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Font Size</span><span class="value" id="nameSizeVal">5.2%</span></div>
-          <input type="range" id="nameSize" min="1" max="15" value="5.2" step="0.1">
-        </div>
-
-        <!-- Date Settings -->
-        <div class="settings-group-title">Date Placement</div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Vertical Position (Y)</span><span class="value" id="dateYVal">83%</span></div>
-          <input type="range" id="dateY" min="0" max="100" value="83" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Horizontal Position (X)</span><span class="value" id="dateXVal">18.5%</span></div>
-          <input type="range" id="dateX" min="0" max="100" value="18.5" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Font Size</span><span class="value" id="dateSizeVal">2.8%</span></div>
-          <input type="range" id="dateSize" min="1" max="10" value="2.8" step="0.1">
-        </div>
-
-        <!-- Signature settings -->
-        <div class="settings-group-title">Signature Placement</div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Vertical Position (Y)</span><span class="value" id="sigYVal">84%</span></div>
-          <input type="range" id="sigY" min="0" max="100" value="84" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Horizontal Position (X)</span><span class="value" id="sigXVal">74.5%</span></div>
-          <input type="range" id="sigX" min="0" max="100" value="74.5" step="0.5">
-        </div>
-        <div class="slider-group">
-          <div class="slider-header"><span>Scale (Width)</span><span class="value" id="sigWVal">16%</span></div>
-          <input type="range" id="sigW" min="5" max="50" value="16" step="0.5">
-        </div>
-
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button id="downloadBtn">⬇ Download PNG</button>
-      <button id="resetBtn">Reset</button>
-    </div>
+  <div class="row">
+    <button id="downloadBtn">⬇ Download Certificate</button>
+    <button id="resetBtn">Reset</button>
   </div>
-
-  <div class="preview-card">
-    <div class="canvas-wrap">
-      <canvas id="certCanvas"></canvas>
-    </div>
-    <p class="hint">Upload a custom template if you want to generate different styled certificates.<br>Open "Customize Layout & Fonts" to place details perfectly.</p>
-  </div>
-
 </div>
 
+<div class="canvas-wrap">
+  <canvas id="certCanvas"></canvas>
+</div>
+
+<p class="hint">Type a name above — the certificate updates live with the name, date and signature automatically placed.</p>
+
 <script>
-// Main Images
-let certImg = new Image();
+const certImg = new Image();
 certImg.src = "certs/default_cert.jpg";
 
-let signImg = new Image();
-signImg.src = ""; // Private signature hidden, user uploads dynamically
+const signImg = new Image();
+signImg.src = "certs/default_signature.png";
 
 const canvas = document.getElementById('certCanvas');
 const ctx = canvas.getContext('2d');
 
-// Input Controls
 const nameInput = document.getElementById('nameInput');
 const dateInput = document.getElementById('dateInput');
-const tplUpload = document.getElementById('tplUpload');
-const sigUpload = document.getElementById('sigUpload');
-const tplName = document.getElementById('tplName');
-const sigName = document.getElementById('sigName');
 
-// Accordion toggle
-const settingsToggle = document.getElementById('settingsToggle');
-const settingsContent = document.getElementById('settingsContent');
-settingsToggle.addEventListener('click', () => {
-  settingsToggle.classList.toggle('open');
-  settingsContent.classList.toggle('open');
-});
-
-// Advanced Sliders / styling
-const nameFontSelect = document.getElementById('nameFontSelect');
-const nameColor = document.getElementById('nameColor');
-const nameY = document.getElementById('nameY');
-const nameX = document.getElementById('nameX');
-const nameSize = document.getElementById('nameSize');
-
-const dateY = document.getElementById('dateY');
-const dateX = document.getElementById('dateX');
-const dateSize = document.getElementById('dateSize');
-
-const sigY = document.getElementById('sigY');
-const sigX = document.getElementById('sigX');
-const sigW = document.getElementById('sigW');
-
-// Handle image loading
-let templateLoaded = false;
-certImg.onload = () => {
-  templateLoaded = true;
-  draw();
-};
-
-// Custom Upload Template
-tplUpload.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    tplName.textContent = file.name;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      certImg = new Image();
-      certImg.onload = () => {
-        templateLoaded = true;
-        draw();
-      };
-      certImg.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// Custom Upload Signature
-sigUpload.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    sigName.textContent = file.name;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      signImg = new Image();
-      signImg.onload = () => {
-        draw();
-      };
-      signImg.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
+let imagesLoaded = 0;
+function checkLoaded() {
+  imagesLoaded++;
+  if (imagesLoaded === 2) draw();
+}
+certImg.onload = checkLoaded;
+signImg.onload = checkLoaded;
 
 function formatDate(isoStr) {
   if (!isoStr) return "";
@@ -488,124 +151,48 @@ function formatDate(isoStr) {
   return `${d}-${m}-${y}`;
 }
 
-function updateSliderValue(sliderId, valueSpanId, suffix = "%") {
-  const slider = document.getElementById(sliderId);
-  const span = document.getElementById(valueSpanId);
-  span.textContent = slider.value + suffix;
-}
-
-// Bind Sliders to update displays and redraw
-const sliders = [
-  { id: 'nameY', valId: 'nameYVal', suffix: '%' },
-  { id: 'nameX', valId: 'nameXVal', suffix: '%' },
-  { id: 'nameSize', valId: 'nameSizeVal', suffix: '%' },
-  { id: 'dateY', valId: 'dateYVal', suffix: '%' },
-  { id: 'dateX', valId: 'dateXVal', suffix: '%' },
-  { id: 'dateSize', valId: 'dateSizeVal', suffix: '%' },
-  { id: 'sigY', valId: 'sigYVal', suffix: '%' },
-  { id: 'sigX', valId: 'sigXVal', suffix: '%' },
-  { id: 'sigW', valId: 'sigWVal', suffix: '%' }
-];
-
-sliders.forEach(slider => {
-  const el = document.getElementById(slider.id);
-  el.addEventListener('input', () => {
-    updateSliderValue(slider.id, slider.valId, slider.suffix);
-    draw();
-  });
-});
-
-nameFontSelect.addEventListener('change', draw);
-nameColor.addEventListener('input', draw);
-nameInput.addEventListener('input', draw);
-dateInput.addEventListener('input', draw);
-
 function draw() {
-  if (!templateLoaded) return;
-  const w = certImg.width || 800;
-  const h = certImg.height || 600;
+  const w = certImg.width;
+  const h = certImg.height;
   canvas.width = w;
   canvas.height = h;
 
-  // Draw Template
   ctx.drawImage(certImg, 0, 0, w, h);
 
-  // Recipient Name Layout Settings
-  const nY = (parseFloat(nameY.value) / 100) * h;
-  const nX = (parseFloat(nameX.value) / 100) * w;
-  const nSize = (parseFloat(nameSize.value) / 100) * h;
-  const fontStyle = nameFontSelect.value;
-
+  // ---- Name (on the blank line above "For transforming...") ----
+  const name = nameInput.value.trim() || "Your Name";
   ctx.textAlign = "center";
-  ctx.fillStyle = nameColor.value;
-  ctx.font = `${Math.round(nSize)}px "${fontStyle}", cursive, sans-serif`;
-  
-  const name = nameInput.value.trim() || "Alex Morgan";
-  ctx.fillText(name, nX, nY);
+  ctx.fillStyle = "#1a1a1a";
+  ctx.font = `italic ${Math.round(h * 0.052)}px "Brush Script MT", "Segoe Script", cursive`;
+  // Position: centered horizontally, sits just above the long line (~ y 0.548 of height)
+  ctx.fillText(name, w * 0.50, h * 0.53);
 
-  // Date Layout Settings
-  const dY = (parseFloat(dateY.value) / 100) * h;
-  const dX = (parseFloat(dateX.value) / 100) * w;
-  const dSize = (parseFloat(dateSize.value) / 100) * h;
-  
-  ctx.font = `${Math.round(dSize)}px "Montserrat", sans-serif`;
-  ctx.fillStyle = nameColor.value; // match color or keep dark
-  ctx.textAlign = "center";
-  
+  // ---- Date ----
   const dateStr = formatDate(dateInput.value) || "14-06-2026";
-  ctx.fillText(dateStr, dX, dY);
+  ctx.font = `${Math.round(h * 0.028)}px Arial`;
+  ctx.fillStyle = "#1a1a1a";
+  ctx.textAlign = "center";
+  ctx.fillText(dateStr, w * 0.185, h * 0.83);
 
-  // Signature Layout Settings
-  if (signImg && signImg.src && signImg.width > 0) {
-    const sY = (parseFloat(sigY.value) / 100) * h;
-    const sX = (parseFloat(sigX.value) / 100) * w;
-    const sW = (parseFloat(sigW.value) / 100) * w;
-    const sH = sW * (signImg.height / signImg.width);
-    
-    // Draw signature (centered on signature X coordinate, Y is the bottom base line)
-    ctx.drawImage(signImg, sX - sW/2, sY - sH, sW, sH);
-  }
+  // ---- Signature ----
+  const sigW = w * 0.16;
+  const sigH = sigW * (signImg.height / signImg.width);
+  ctx.drawImage(signImg, w * 0.745, h * 0.84 - sigH, sigW, sigH);
 }
 
-// Reset button
+nameInput.addEventListener('input', draw);
+dateInput.addEventListener('input', draw);
+
 document.getElementById('resetBtn').addEventListener('click', () => {
-  nameInput.value = "Alex Morgan";
+  nameInput.value = "";
   dateInput.value = "2026-06-14";
-  
-  // Reset image sources
-  certImg.src = "certs/default_cert.jpg";
-  signImg.src = "";
-  tplName.textContent = "Using Default";
-  sigName.textContent = "None Uploaded (Optional)";
-  tplUpload.value = "";
-  sigUpload.value = "";
-
-  // Reset sliders
-  nameY.value = 53;
-  nameX.value = 50;
-  nameSize.value = 5.2;
-  dateY.value = 83;
-  dateX.value = 18.5;
-  dateSize.value = 2.8;
-  sigY.value = 84;
-  sigX.value = 74.5;
-  sigW.value = 16;
-  nameColor.value = "#1a1a1a";
-  nameFontSelect.selectedIndex = 0;
-
-  // Update slider displays
-  sliders.forEach(slider => {
-    updateSliderValue(slider.id, slider.valId, slider.suffix);
-  });
-
   draw();
 });
 
-// Download button
 document.getElementById('downloadBtn').addEventListener('click', () => {
   const name = nameInput.value.trim() || "certificate";
   const link = document.createElement('a');
-  link.download = `Certificate_${name.replace(/\s+/g, '_')}.png`;
+  link.download = `Lyria_Certificate_${name.replace(/\s+/g, '_')}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
 });
