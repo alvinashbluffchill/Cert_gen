@@ -1,376 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Google Student Ambassador Program - Certificate Generator</title>
-<!-- Google Fonts for premium typography -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0b0f19;
-    --panel: #151d30;
-    --accent: #4285f4;
-    --accent-hover: #357ae8;
-    --text: #f1f3f4;
-    --muted: #9aa0a6;
-    --border: #2c3852;
-    --input-bg: #0b0f19;
-  }
-  
-  * { box-sizing: border-box; }
-  
-  body {
-    margin: 0;
-    font-family: 'Outfit', 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 16px 80px;
-    min-height: 100vh;
-  }
-  
-  .header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .subtitle {
-    color: var(--muted);
-    font-size: 1rem;
-    margin: 0;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 1000px;
-    gap: 30px;
-  }
-  
-  @media (min-width: 800px) {
-    .container {
-      flex-direction: row;
-      align-items: flex-start;
+  <meta charset="UTF-8">
+  <title>Lyria Certificate Generator</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #1a1d24;
+      --accent: #4f8cff;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --border: #2a2e37;
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 8px 0 20px;
+      text-align: center;
+    }
+
     .controls {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f1115;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: 2px solid var(--accent);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    button {
       flex: 1;
-      position: sticky;
-      top: 30px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
     }
-    .preview-section {
-      flex: 2;
+
+    button:hover {
+      opacity: 0.85;
     }
-  }
 
-  .controls {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--muted);
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  input[type="text"], input[type="date"], input[type="file"] {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--input-bg);
-    color: var(--text);
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    font-family: inherit;
-  }
-  
-  input[type="text"]:focus, input[type="date"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.25);
-  }
-  
-  /* Style file input */
-  input[type="file"]::file-selector-button {
-    background: var(--border);
-    color: var(--text);
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 10px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    transition: background 0.2s;
-  }
-  
-  input[type="file"]::file-selector-button:hover {
-    background: #3e4d6e;
-  }
-  
-  .row {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  
-  button {
-    flex: 1;
-    padding: 14px 20px;
-    border-radius: 8px;
-    border: none;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  #downloadBtn {
-    background: var(--accent);
-    color: #fff;
-  }
-  
-  #downloadBtn:hover {
-    background: var(--accent-hover);
-    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
-  }
-  
-  #resetBtn {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--border);
-  }
-  
-  #resetBtn:hover {
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.05);
-  }
-  
-  .preview-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
+    #downloadBtn {
+      background: var(--accent);
+      color: #fff;
+    }
 
-  .canvas-wrap {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    background: #000;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-    aspect-ratio: 1024/738;
-  }
-  
-  canvas {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  
-  .hint {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 16px;
-    text-align: center;
-  }
-</style>
+    #resetBtn {
+      background: #2a2e37;
+      color: var(--text);
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 16px;
+      text-align: center;
+      max-width: 600px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="header">
-  <h1>🏆 Google Student Ambassador</h1>
-  <p class="subtitle">Music Night Edition Certificate Generator</p>
-</div>
+  <h1>🏆 Lyria "Top Artist" Certificate Generator</h1>
 
-<div class="container">
   <div class="controls">
-    <div class="form-group">
-      <label for="nameInput">Recipient Name</label>
-      <input type="text" id="nameInput" placeholder="Enter full name" value="John Doe">
-    </div>
+    <label for="nameInput">Recipient Name</label>
+    <input type="text" id="nameInput" placeholder="Enter full name" value="">
 
-    <div class="form-group">
-      <label for="dateInput">Date</label>
-      <input type="date" id="dateInput" value="2026-06-14">
-    </div>
-
-    <div class="form-group">
-      <label for="sigTextInput">Signature Text (Cursive)</label>
-      <input type="text" id="sigTextInput" placeholder="Enter Signee Name" value="Lead Organizer">
-    </div>
-
-    <div class="form-group">
-      <label for="sigFileInput">Or Upload Signature Image (Optional)</label>
-      <input type="file" id="sigFileInput" accept="image/*">
-    </div>
+    <label for="dateInput">Date</label>
+    <input type="date" id="dateInput" value="2026-06-14">
 
     <div class="row">
-      <button id="downloadBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Download PNG
-      </button>
+      <button id="downloadBtn">⬇ Download Certificate</button>
       <button id="resetBtn">Reset</button>
     </div>
   </div>
-  
-  <div class="preview-section">
-    <div class="canvas-wrap">
-      <canvas id="certCanvas"></canvas>
-    </div>
-    <p class="hint">Updates automatically as you type. High-resolution download will match the template size exactly.</p>
+
+  <div class="canvas-wrap">
+    <canvas id="certCanvas"></canvas>
   </div>
-</div>
 
-<script>
-const certImg = new Image();
-certImg.src = "certs/default_cert.jpg";
+  <p class="hint">Type a name above — the certificate updates live with the name, date and signature automatically
+    placed.</p>
 
-let uploadedSigImg = null;
+  <script>
+    const certImg = new Image();
+    certImg.src = "certs/default_cert.jpg";
 
-const canvas = document.getElementById('certCanvas');
-const ctx = canvas.getContext('2d');
+    const signImg = new Image();
+    signImg.src = "certs/default_signature.png";
 
-const nameInput = document.getElementById('nameInput');
-const dateInput = document.getElementById('dateInput');
-const sigTextInput = document.getElementById('sigTextInput');
-const sigFileInput = document.getElementById('sigFileInput');
+    const canvas = document.getElementById('certCanvas');
+    const ctx = canvas.getContext('2d');
 
-// Redraw when fonts or image load
-certImg.onload = () => {
-  draw();
-};
+    const nameInput = document.getElementById('nameInput');
+    const dateInput = document.getElementById('dateInput');
 
-document.fonts.ready.then(() => {
-  draw();
-});
+    let imagesLoaded = 0;
+    function checkLoaded() {
+      imagesLoaded++;
+      if (imagesLoaded === 2) draw();
+    }
+    certImg.onload = checkLoaded;
+    signImg.onload = checkLoaded;
 
-function formatDate(isoStr) {
-  if (!isoStr) return "";
-  const [y, m, d] = isoStr.split('-');
-  return `${d}/${m}/${y}`;
-}
+    function formatDate(isoStr) {
+      if (!isoStr) return "";
+      const [y, m, d] = isoStr.split('-');
+      return `${d}-${m}-${y}`;
+    }
 
-function draw() {
-  if (!certImg.complete || certImg.naturalWidth === 0) return;
-  
-  const w = certImg.width;
-  const h = certImg.height;
-  canvas.width = w;
-  canvas.height = h;
+    function draw() {
+      const w = certImg.width;
+      const h = certImg.height;
+      canvas.width = w;
+      canvas.height = h;
 
-  // Draw template
-  ctx.drawImage(certImg, 0, 0, w, h);
+      ctx.drawImage(certImg, 0, 0, w, h);
 
-  // ---- Recipient Name ----
-  const name = nameInput.value.trim() || "Recipient Name";
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#1a1a1a";
-  // Premium italic handwriting font (Great Vibes)
-  ctx.font = `${Math.round(h * 0.075)}px 'Great Vibes', cursive`;
-  // Position sitting nicely on the long central line
-  ctx.fillText(name, w * 0.50, h * 0.53);
+      // ---- Name (on the blank line above "For transforming...") ----
+      const name = nameInput.value.trim() || "Your Name";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#1a1a1a";
+      ctx.font = `italic ${Math.round(h * 0.052)}px "Brush Script MT", "Segoe Script", cursive`;
+      // Position: centered horizontally, sits just above the long line (~ y 0.548 of height)
+      ctx.fillText(name, w * 0.50, h * 0.53);
 
-  // ---- Date ----
-  const dateStr = formatDate(dateInput.value) || "14/06/2026";
-  ctx.font = `500 ${Math.round(h * 0.03)}px 'Outfit', sans-serif`;
-  ctx.fillStyle = "#222222";
-  ctx.textAlign = "center";
-  // Centered above the Date line on the bottom-left
-  ctx.fillText(dateStr, w * 0.185, h * 0.85);
+      // ---- Date ----
+      const dateStr = formatDate(dateInput.value) || "14-06-2026";
+      ctx.font = `${Math.round(h * 0.028)}px Arial`;
+      ctx.fillStyle = "#1a1a1a";
+      ctx.textAlign = "center";
+      ctx.fillText(dateStr, w * 0.185, h * 0.83);
 
-  // ---- Signature ----
-  if (uploadedSigImg) {
-    // Draw uploaded signature image
-    const sigW = w * 0.18;
-    const sigH = sigW * (uploadedSigImg.height / uploadedSigImg.width);
-    ctx.drawImage(uploadedSigImg, w * 0.81 - (sigW / 2), h * 0.855 - sigH, sigW, sigH);
-  } else {
-    // Draw signature text using handwriting font
-    const sigText = sigTextInput.value.trim() || "Organizer";
-    ctx.font = `${Math.round(h * 0.05)}px 'Great Vibes', cursive`;
-    ctx.fillStyle = "#111111";
-    ctx.textAlign = "center";
-    ctx.fillText(sigText, w * 0.81, h * 0.84);
-  }
-}
+      // ---- Signature ----
+      const sigW = w * 0.16;
+      const sigH = sigW * (signImg.height / signImg.width);
+      ctx.drawImage(signImg, w * 0.745, h * 0.84 - sigH, sigW, sigH);
+    }
 
-// Live updating event listeners
-nameInput.addEventListener('input', draw);
-dateInput.addEventListener('input', draw);
-sigTextInput.addEventListener('input', draw);
+    nameInput.addEventListener('input', draw);
+    dateInput.addEventListener('input', draw);
 
-// Handle signature image upload
-sigFileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        uploadedSigImg = img;
-        draw();
-      };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    uploadedSigImg = null;
-    draw();
-  }
-});
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      nameInput.value = "";
+      dateInput.value = "2026-06-14";
+      draw();
+    });
 
-// Reset inputs
-document.getElementById('resetBtn').addEventListener('click', () => {
-  nameInput.value = "John Doe";
-  dateInput.value = "2026-06-14";
-  sigTextInput.value = "Lead Organizer";
-  sigFileInput.value = "";
-  uploadedSigImg = null;
-  draw();
-});
-
-// Download PNG
-document.getElementById('downloadBtn').addEventListener('click', () => {
-  const name = nameInput.value.trim() || "certificate";
-  const link = document.createElement('a');
-  link.download = `GSA_Music_Night_Certificate_${name.replace(/\s+/g, '_')}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-});
-</script>
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const name = nameInput.value.trim() || "certificate";
+      const link = document.createElement('a');
+      link.download = `Lyria_Certificate_${name.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
 
 </body>
+
 </html>
