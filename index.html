@@ -310,7 +310,7 @@
         </div>
         <div class="file-upload-btn">
           <strong>✍ Signature Image</strong>
-          <span id="sigName">Using Default</span>
+          <span id="sigName">None Uploaded (Optional)</span>
           <input type="file" id="sigUpload" accept="image/*">
         </div>
       </div>
@@ -404,7 +404,7 @@ let certImg = new Image();
 certImg.src = "certs/default_cert.jpg";
 
 let signImg = new Image();
-signImg.src = "certs/default_signature.png";
+signImg.src = ""; // Private signature hidden, user uploads dynamically
 
 const canvas = document.getElementById('certCanvas');
 const ctx = canvas.getContext('2d');
@@ -441,21 +441,11 @@ const sigX = document.getElementById('sigX');
 const sigW = document.getElementById('sigW');
 
 // Handle image loading
-let imagesLoaded = 0;
-function imageLoadedCallback() {
-  imagesLoaded++;
-  if (imagesLoaded >= 2) {
-    draw();
-  }
-}
-certImg.onload = imageLoadedCallback;
-signImg.onload = imageLoadedCallback;
-
-function checkImagesLoaded() {
-  if (certImg.complete && signImg.complete) {
-    draw();
-  }
-}
+let templateLoaded = false;
+certImg.onload = () => {
+  templateLoaded = true;
+  draw();
+};
 
 // Custom Upload Template
 tplUpload.addEventListener('change', (e) => {
@@ -466,6 +456,7 @@ tplUpload.addEventListener('change', (e) => {
     reader.onload = (event) => {
       certImg = new Image();
       certImg.onload = () => {
+        templateLoaded = true;
         draw();
       };
       certImg.src = event.target.result;
@@ -530,6 +521,7 @@ nameInput.addEventListener('input', draw);
 dateInput.addEventListener('input', draw);
 
 function draw() {
+  if (!templateLoaded) return;
   const w = certImg.width || 800;
   const h = certImg.height || 600;
   canvas.width = w;
@@ -564,7 +556,7 @@ function draw() {
   ctx.fillText(dateStr, dX, dY);
 
   // Signature Layout Settings
-  if (signImg.width > 0) {
+  if (signImg && signImg.src && signImg.width > 0) {
     const sY = (parseFloat(sigY.value) / 100) * h;
     const sX = (parseFloat(sigX.value) / 100) * w;
     const sW = (parseFloat(sigW.value) / 100) * w;
@@ -582,9 +574,9 @@ document.getElementById('resetBtn').addEventListener('click', () => {
   
   // Reset image sources
   certImg.src = "certs/default_cert.jpg";
-  signImg.src = "certs/default_signature.png";
+  signImg.src = "";
   tplName.textContent = "Using Default";
-  sigName.textContent = "Using Default";
+  sigName.textContent = "None Uploaded (Optional)";
   tplUpload.value = "";
   sigUpload.value = "";
 
