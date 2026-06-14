@@ -134,7 +134,7 @@
     <input type="text" id="nameInput" placeholder="Enter full name" value="">
 
     <label for="dateInput">Date</label>
-    <input type="date" id="dateInput" value="2026-06-14">
+    <input type="date" id="dateInput" value="2026-06-20">
 
     <div class="row">
       <button id="downloadBtn">⬇ Download Certificate</button>
@@ -193,7 +193,7 @@
       ctx.fillText(name, w * 0.50, h * 0.53);
 
       // ---- Date ----
-      const dateStr = formatDate(dateInput.value) || "14-06-2026";
+      const dateStr = formatDate(dateInput.value) || "20-06-2026";
       ctx.font = `${Math.round(h * 0.028)}px Arial`;
       ctx.fillStyle = "#1a1a1a";
       ctx.textAlign = "center";
@@ -210,7 +210,7 @@
 
     document.getElementById('resetBtn').addEventListener('click', () => {
       nameInput.value = "";
-      dateInput.value = "2026-06-14";
+      dateInput.value = "2026-06-20";
       draw();
     });
 
