@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Google Student Ambassador Certificate Generator</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #1a1d24;
+      --accent: #4f8cff;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --border: #2a2e37;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin: 8px 0 20px;
+      text-align: center;
+    }
+
+    .controls {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f1115;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: 2px solid var(--accent);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    #downloadBtn {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    #resetBtn {
+      background: #2a2e37;
+      color: var(--text);
+    }
+
+    .canvas-wrap {
+      width: 100%;
+      max-width: 900px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 16px;
+      text-align: center;
+      max-width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🏆 Google Student Ambassador Certificate Generator</h1>
+
+  <div class="controls">
+    <label for="nameInput">Recipient Name</label>
+    <input type="text" id="nameInput" placeholder="Enter full name" value="">
+
+    <label for="dateInput">Date</label>
+    <input type="date" id="dateInput" value="2026-06-14">
+
+    <div class="row">
+      <button id="downloadBtn">⬇ Download Certificate</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="certCanvas"></canvas>
+  </div>
+
+  <p class="hint">Type a name above — the certificate updates live with the name, date and signature automatically
+    placed.</p>
+
+  <script>
+    const certImg = new Image();
+    certImg.src = "certs/default_cert.jpg";
+
+    const signImg = new Image();
+    signImg.src = "certs/default_signature.png";
+
+    const canvas = document.getElementById('certCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const nameInput = document.getElementById('nameInput');
+    const dateInput = document.getElementById('dateInput');
+
+    let imagesLoaded = 0;
+    function checkLoaded() {
+      imagesLoaded++;
+      if (imagesLoaded === 2) draw();
+    }
+    certImg.onload = checkLoaded;
+    signImg.onload = checkLoaded;
+
+    function formatDate(isoStr) {
+      if (!isoStr) return "";
+      const [y, m, d] = isoStr.split('-');
+      return `${d}-${m}-${y}`;
+    }
+
+    function draw() {
+      const w = certImg.width;
+      const h = certImg.height;
+      canvas.width = w;
+      canvas.height = h;
+
+      ctx.drawImage(certImg, 0, 0, w, h);
+
+      // ---- Name (on the blank line above "For transforming...") ----
+      const name = nameInput.value.trim() || "Your Name";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#1a1a1a";
+      ctx.font = `italic ${Math.round(h * 0.052)}px "Brush Script MT", "Segoe Script", cursive`;
+      // Position: centered horizontally, sits just above the long line (~ y 0.548 of height)
+      ctx.fillText(name, w * 0.50, h * 0.53);
+
+      // ---- Date ----
+      const dateStr = formatDate(dateInput.value) || "14-06-2026";
+      ctx.font = `${Math.round(h * 0.028)}px Arial`;
+      ctx.fillStyle = "#1a1a1a";
+      ctx.textAlign = "center";
+      ctx.fillText(dateStr, w * 0.185, h * 0.83);
+
+      // ---- Signature ----
+      const sigW = w * 0.16;
+      const sigH = sigW * (signImg.height / signImg.width);
+      ctx.drawImage(signImg, w * 0.745, h * 0.84 - sigH, sigW, sigH);
+    }
+
+    nameInput.addEventListener('input', draw);
+    dateInput.addEventListener('input', draw);
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      nameInput.value = "";
+      dateInput.value = "2026-06-14";
+      draw();
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      const name = nameInput.value.trim() || "certificate";
+      const link = document.createElement('a');
+      link.download = `Lyria_Certificate_${name.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+
+</body>
+
+</html>
